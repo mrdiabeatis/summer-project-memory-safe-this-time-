@@ -34,7 +34,7 @@ int main() {
 	std::vector<GLfloat> uvs(u, u + sizeof(u) / sizeof(GLfloat));
 	std::vector<GLfloat> normals(n, n + sizeof(n) / sizeof(GLfloat));
 
-	App app = App(1200, 800, "mien kramf"); // singleton for engine states
+	App app = App(1200, 800, "Minecrap"); // singleton for engine states
 
 	Shader shader = Shader("DefaultVert.vert", "DefaultFrag.frag");
 	Mesh mesh = Mesh(verts, ind, uvs, normals);
@@ -53,7 +53,7 @@ int main() {
 	}
 	
 	mesh.de_instance();
-	shader.destroy();
+	shader.de_instance();
 	app.de_instance();
 	return 0;
 }

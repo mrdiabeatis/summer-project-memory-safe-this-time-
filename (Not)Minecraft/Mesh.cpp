@@ -16,9 +16,14 @@ Mesh::Mesh(std::vector<GLfloat>& positions, std::vector<GLuint>& indices, std::v
 	data.vao.terminate();
 	V_vbo.terminate();
 	ebo.terminate();
+
+	std::cout << "MSG::MESH_CREATED\n";
 }
 
 void Mesh::de_instance(){ 
 	if (data.vao.ID != NULL)
 		glDeleteProgram(data.vao.ID);
+	else
+		throw;
+	std::cout << "MSG::MESH_DESTROYED\n";
 }
