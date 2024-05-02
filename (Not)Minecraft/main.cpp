@@ -34,32 +34,26 @@ int main() {
 	std::vector<GLfloat> uvs(u, u + sizeof(u) / sizeof(GLfloat));
 	std::vector<GLfloat> normals(n, n + sizeof(n) / sizeof(GLfloat));
 
-	App app = App(1200, 800); // singleton for engine states
-	
-	ECS_Entity ecs_Entity = ECS_Entity("test entity");
+	App app = App(1200, 800, "mien kramf"); // singleton for engine states
 
-	ecs_Entity.add_ECS_COMPONENT(create_ECS_Shader("DefaultVert.vert", "DefaultFrag.frag"), ECS_Shader_ID);
-	ecs_Entity.add_ECS_COMPONENT(create_ECS_Model(Mesh(verts, ind, uvs, normals), loadTextureFromFile("TEST_UV.png", GL_NEAREST, false, 0)), ECS_Model_ID);
-	ecs_Entity.add_ECS_COMPONENT(create_ECS_Transform(glm::vec3(0,0,0), glm::vec3(0,0,0), glm::vec3(0,0,0)), ECS_Transform_ID);
+	Shader shader = Shader("DefaultVert.vert", "DefaultFrag.frag");
+	Mesh mesh = Mesh(verts, ind, uvs, normals);
 	
 	while (!app.app_ShouldClose()) {
-		// ECS system test
-		// note::in order to refrence individual entity components a type cast from a void* is required for now
 		glClearColor(0.122f, 0.140f, 0.221f, 1.000f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		static_cast<ECS_Shader*>(ecs_Entity.get_ECS_COMPONENT_VOID(ECS_Shader_ID))->activate();
-		static_cast<ECS_Model*>(ecs_Entity.get_ECS_COMPONENT_VOID(ECS_Model_ID))->mesh.data.vao.activate();
+		shader.activate();
+		mesh.data.vao.activate();
 		glDrawElements(GL_TRIANGLES, sizeof(i) / sizeof(i[0]), GL_UNSIGNED_INT, 0);
-		static_cast<ECS_Model*>(ecs_Entity.get_ECS_COMPONENT_VOID(ECS_Model_ID))->mesh.data.vao.terminate();
-		static_cast<ECS_Shader*>(ecs_Entity.get_ECS_COMPONENT_VOID(ECS_Shader_ID))->terminate();
+		mesh.data.vao.terminate();
+		shader.terminate();
 
-		app.process_Entity(&ecs_Entity); 
 		app.draw();
 	}
-
-
-	ecs_Entity.de_instance();
+	
+	mesh.de_instance();
+	shader.destroy();
 	app.de_instance();
 	return 0;
 }

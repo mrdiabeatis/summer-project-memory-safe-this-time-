@@ -1,7 +1,8 @@
 #include"App.h"
 
 void initContext(uint16_t v, bool r);
-GLFWwindow* initWindow(uint16_t x, uint16_t y);
+GLFWwindow* initWindow(uint16_t x, uint16_t y, const char* name);
+
 void App::pre_render() {
 
 }
@@ -9,41 +10,43 @@ void App::pre_render() {
 void App::post_render() {
 	glfwSwapBuffers(config.window);
 	glfwPollEvents();
-	collections._entities.clear();
 }
 
 void App::render() {
 	// draw calls and such :)
 }
 
-App::App(uint16_t WIDTH, uint16_t HEIGHT) {
+App::App(uint16_t WIDTH, uint16_t HEIGHT, const char* name) {
 	config.WIDTH = WIDTH;
 	config.HEIGHT = HEIGHT;
 	config.resizable = false;
 	config.V_WIDTH = WIDTH;
 	config.V_HEIGHT = HEIGHT;
+	config.name = name;
 	initContext(3, config.resizable);
-	config.window = initWindow(config.WIDTH, config.HEIGHT);
+	config.window = initWindow(config.WIDTH, config.HEIGHT, name);
 }
 
-App::App(uint16_t WIDTH, uint16_t HEIGHT, bool resizable) {
+App::App(uint16_t WIDTH, uint16_t HEIGHT, bool resizable, const char* name) {
 	config.WIDTH = WIDTH;
 	config.HEIGHT = HEIGHT;
 	config.resizable = resizable;
 	config.V_WIDTH = WIDTH;
 	config.V_HEIGHT = HEIGHT;
+	config.name = name;
 	initContext(3, config.resizable);
-	config.window = initWindow(config.WIDTH, config.HEIGHT);
+	config.window = initWindow(config.WIDTH, config.HEIGHT, name);
 }
 
-App::App(uint16_t WIDTH, uint16_t HEIGHT, bool resizable, uint16_t V_WIDTH, uint16_t V_HEIGHT) {
+App::App(uint16_t WIDTH, uint16_t HEIGHT, bool resizable, uint16_t V_WIDTH, uint16_t V_HEIGHT, const char* name) {
 	config.WIDTH = WIDTH;
 	config.HEIGHT = HEIGHT;
 	config.resizable = resizable;
 	config.V_WIDTH = V_WIDTH;
 	config.V_HEIGHT = V_HEIGHT;
+	config.name = name;
 	initContext(3, config.resizable);
-	config.window = initWindow(config.WIDTH, config.HEIGHT);
+	config.window = initWindow(config.WIDTH, config.HEIGHT, name);
 }
 
 void App::draw() {
@@ -61,8 +64,8 @@ bool App::app_ShouldClose() {
 	return glfwWindowShouldClose(config.window);
 }
 
-void App::process_Entity(ECS_Entity* e) {
-	collections._entities.push_back(*e);
+void App::process_Entity() {
+	// add entitiy to entity vector
 }
 
 void initContext(uint16_t v, bool r) {
@@ -75,8 +78,8 @@ void initContext(uint16_t v, bool r) {
 	std::cout << "MSG::OPENGL_CONTEXT_CREATED\n";
 }
 
-GLFWwindow* initWindow(uint16_t x, uint16_t y) {
-	GLFWwindow* window = glfwCreateWindow(1200, 800, "Mein kramf", NULL, NULL);
+GLFWwindow* initWindow(uint16_t x, uint16_t y, const char* name) {
+	GLFWwindow* window = glfwCreateWindow(1200, 800, name, NULL, NULL);
 	if (window == NULL || !glfwInit())
 		throw std::invalid_argument("ERR::WINDOW_CREATION_FAILED::(WINDOW*_RETURNS_NULLPTR)\n");
 	glfwMakeContextCurrent(window);

@@ -13,8 +13,6 @@
 
 #include"Mesh.h"
 
-#include"ECS_Entity.h"
-
 class App {
 	void post_render();
 	void pre_render();
@@ -26,17 +24,17 @@ class App {
 		uint16_t V_WIDTH;
 		uint16_t V_HEIGHT;
 		GLFWwindow* window;
+		const char* name;
 	} config;
 	struct collections {
-		std::vector<ECS_Entity> _entities;
 	} collections;
 public:
-	App(uint16_t WIDTH, uint16_t HEIGHT);
-	App(uint16_t WIDTH, uint16_t HEIGHT, bool resizable);
-	App(uint16_t WIDTH, uint16_t HEIGHT, bool resizable, uint16_t V_WIDTH, uint16_t V_HEIGHT);
+	App(uint16_t WIDTH, uint16_t HEIGHT, const char* name);
+	App(uint16_t WIDTH, uint16_t HEIGHT, bool resizable, const char* name);
+	App(uint16_t WIDTH, uint16_t HEIGHT, bool resizable, uint16_t V_WIDTH, uint16_t V_HEIGHT, const char* name);
 	void draw();
 	void de_instance();
 
 	bool app_ShouldClose();
-	void process_Entity(ECS_Entity* e);
+	void process_Entity();
 };
